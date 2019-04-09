@@ -1,0 +1,87 @@
+#include <Adafruit_CircuitPlayground.h>
+
+#define CAP_THRESHOLD   20
+#define DEBOUNCE        250
+#define BRIGHTNESS      60
+
+uint8_t pads[] = {3, 2, 0, 1, 12, 6, 9, 10};
+uint8_t numberOfPads = sizeof(pads)/sizeof(uint8_t);
+
+////////////////////////////////////////////////////////////////////////////
+boolean capButton(uint8_t pad) {
+  //Serial.println(CircuitPlayground.readCap(pad));
+  if (CircuitPlayground.readCap(pad) > CAP_THRESHOLD) {
+    return true;  
+  } else {
+    return false;
+  }
+}
+
+void setColorRGB(int r, int g, int b)
+{
+  for (int i=0; i<CircuitPlayground.strip.numPixels();++i) {
+    CircuitPlayground.setPixelColor(i, r, g, b);
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////
+void takeAction(uint8_t pad) {
+  Serial.print("PAD "); Serial.print(pad);
+  switch (pad) {
+    case 3:
+      
+      break;
+    case 2:
+      
+      break;
+    case 0:
+      
+      break;
+    case 1:
+      setColorRGB(255, 0, 0); //RED
+      break;
+    case 12:
+      
+      break;
+    case 6:
+      CircuitPlayground.clearPixels();
+      break;
+    case 9:
+      
+      break;
+    case 10:
+      setColorRGB(0, 0, 255); //BLUE
+      break;
+    default:
+      Serial.println("NONE");
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////
+void setup() {
+  // Initialize serial.
+  Serial.begin(9600); 
+  
+  // Initialize Circuit Playground library.
+  CircuitPlayground.begin();
+  CircuitPlayground.setBrightness(BRIGHTNESS);
+  CircuitPlayground.clearPixels();
+}
+
+void loop() {
+
+  // Loop over every pad.
+  for (int i=0; i<numberOfPads; i++) {
+    
+    // Check if pad is touched.
+    if (capButton(pads[i])) {
+      
+      // Do something.
+      takeAction(pads[i]);
+      
+      // But not too often.
+      delay(DEBOUNCE);
+    }
+  }
+}
