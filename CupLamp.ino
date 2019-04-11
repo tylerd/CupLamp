@@ -7,9 +7,24 @@
 uint8_t pads[] = {3, 2, 0, 1, 12, 6, 9, 10};
 uint8_t numberOfPads = sizeof(pads)/sizeof(uint8_t);
 
+void padPressed(uint8_t pad) {
+  
+  Serial.print("PAD "); Serial.println(pad); //DEBUG Print Pad Number
+
+  if(pad == 3) {
+    setColorRGB(255, 0, 0); //RED
+    return;
+  }
+
+  if(pad == 10) {
+    turnOff();
+    return;
+  }
+}
+
+
 ////////////////////////////////////////////////////////////////////////////
 boolean capButton(uint8_t pad) {
-  //Serial.println(CircuitPlayground.readCap(pad));
   if (CircuitPlayground.readCap(pad) > CAP_THRESHOLD) {
     return true;  
   } else {
@@ -24,38 +39,13 @@ void setColorRGB(int r, int g, int b)
   }
 }
 
-////////////////////////////////////////////////////////////////////////////
-void takeAction(uint8_t pad) {
-  Serial.print("PAD "); Serial.print(pad);
-  switch (pad) {
-    case 3:
-      
-      break;
-    case 2:
-      
-      break;
-    case 0:
-      
-      break;
-    case 1:
-      setColorRGB(255, 0, 0); //RED
-      break;
-    case 12:
-      
-      break;
-    case 6:
-      CircuitPlayground.clearPixels();
-      break;
-    case 9:
-      
-      break;
-    case 10:
-      setColorRGB(0, 0, 255); //BLUE
-      break;
-    default:
-      Serial.println("NONE");
-  }
+void turnOff()
+{
+  CircuitPlayground.clearPixels();
 }
+
+////////////////////////////////////////////////////////////////////////////
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -78,7 +68,7 @@ void loop() {
     if (capButton(pads[i])) {
       
       // Do something.
-      takeAction(pads[i]);
+      padPressed(pads[i]);
       
       // But not too often.
       delay(DEBOUNCE);
