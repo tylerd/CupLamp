@@ -11,12 +11,22 @@ void padPressed(uint8_t pad) {
   
   Serial.print("PAD "); Serial.println(pad); //DEBUG Print Pad Number
 
-  if(pad == 3) {
+  if(pad == 2) {
     setColorRGB(255, 0, 0); //RED
     return;
   }
 
-  if(pad == 10) {
+  if(pad == 9) {
+    setColorRGB(0,255,0); //GREEN
+    return;
+  }
+
+  if(pad == 1) {
+    setColorRGB(0,0,255); //BLUE
+    return;
+  }
+
+  if(pad == 12) {
     turnOff();
     return;
   }
